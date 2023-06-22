@@ -1,0 +1,7 @@
+class AndOperators {
+    public static void main(String[] args) {
+        int a=13;
+        int b=15;
+        System.out.println("Bitwise AND of (" + a + " , " + b + ") is: " + (a & b));
+    }
+}
