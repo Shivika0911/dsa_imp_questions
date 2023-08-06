@@ -1,0 +1,90 @@
+class HelloWorld {
+    static class Node {
+        int data;
+        Node left;
+        Node right;
+
+        public Node(int data) {
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+
+    public static Node lca2(Node root, int n1, int n2) {
+        if (root == null) {
+            return null;
+        }
+
+        if (root.data == n1 || root.data == n2) {
+            return root;
+        }
+
+        Node leftLca = lca2(root.left, n1, n2);
+        Node rightLca = lca2(root.right, n1, n2);
+
+        if (rightLca == null) {
+            return leftLca;
+        }
+
+        if (leftLca == null) {
+            return rightLca;
+        }
+
+        return root;
+    }
+
+    public static Integer minDist(Node root, int n1, int n2) {
+        Node lca = lca2(root, n1, n2);
+        if (lca == null) {
+            return null;
+        }
+
+        Integer dist1 = LcaDist(lca, n1);
+        Integer dist2 = LcaDist(lca, n2);
+
+        if (dist1 == null || dist2 == null) {
+            return null;
+        }
+
+        return dist1 + dist2;
+    }
+
+    public static Integer LcaDist(Node root, int n) {
+        if (root == null) {
+            return null;
+        }
+
+        if (root.data == n) {
+            return 0;
+        }
+
+        Integer leftDist = LcaDist(root.left, n);
+        Integer rightDist = LcaDist(root.right, n);
+
+        if (leftDist == null && rightDist == null) {
+            return null;
+        } else if (leftDist == null) {
+            return rightDist + 1;
+        } else {
+            return leftDist + 1;
+        }
+    }
+
+    public static void main(String[] args) {
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(6);
+        root.right.right = new Node(7);
+        int n1 = 4, n2 = 6;
+        Integer distance = minDist(root, n1, n2);
+        if (distance == null) {
+            System.out.println("One or both nodes are not present in the tree.");
+        } else {
+            System.out.println(distance);
+        }
+    }
+}
